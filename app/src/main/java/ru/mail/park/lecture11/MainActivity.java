@@ -152,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
     private void addMessageIntent(NotificationCompat.Builder builder, String message) {
 
         Intent contentIntent = new Intent(this, MessageActivity.class);
-        contentIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         contentIntent.putExtra(MessageActivity.EXTRA_TEXT, message);
 
         int flags = PendingIntent.FLAG_UPDATE_CURRENT;
