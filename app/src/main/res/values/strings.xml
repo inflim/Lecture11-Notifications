@@ -9,6 +9,9 @@
     <string name="simple_description">Ничего особенного</string>
     <string name="message_name">Сообщение</string>
 
+    <string name="user_name">User Name</string>
+    <string name="new_like">Нравится ваша публикация</string>
+
     <string name="big_image">Большая картинка</string>
 
     <string name="message_summary">Сообщение #%d</string>

@@ -58,11 +58,12 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.button_simple)
     public void showSimpleNotification() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_DEFAULT);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_LIKES);
 
-        builder.setSmallIcon(R.drawable.ic_announcement)
-        .setContentTitle(getString(R.string.simple_name))
-        .setContentText(getString(R.string.simple_description))
+        builder.setSmallIcon(R.drawable.ic_like)
+        .setContentTitle(getString(R.string.user_name))
+        .setContentText(getString(R.string.new_like))
+        .setPriority(NotificationCompat.PRIORITY_LOW)
         .setAutoCancel(true);
 
         addDefaultIntent(builder);
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         String messageToShow = messageEdit.getText().toString();
 
         Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.example_large_icon);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_DEFAULT)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_MESSAGES)
                 .setLargeIcon(largeIcon)
                 .setSmallIcon(R.drawable.ic_message_black)
                 .setContentTitle(getString(R.string.message_name))
