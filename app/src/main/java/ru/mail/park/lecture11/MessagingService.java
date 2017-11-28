@@ -37,6 +37,9 @@ public class MessagingService extends FirebaseMessagingService {
 
     public void showMessageNotification(String title, String message) {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (manager == null)
+            return;
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, MainActivity.CHANNEL_DEFAULT);
 
         builder.setSmallIcon(R.drawable.ic_announcement)

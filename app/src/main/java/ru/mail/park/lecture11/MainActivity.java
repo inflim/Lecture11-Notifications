@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -20,14 +19,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
-
     private NotificationManager manager;
 
     private static final long[] VIBRATION_PATTERN = {0, 100, 50, 100};
     private static final int LIGHT_COLOR_ARGB = Color.GREEN;
-
-    private static final String ACTION_DEFAULT_OPEN = "action_open";
-    private static final String ACTION_TOAST = "action_toast";
 
     public static final String CHANNEL_DEFAULT = "default";
     public static final String CHANNEL_MESSAGES = "messages";
@@ -36,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int NOTIFICATION_ID_SIMPLE = 0;
     private static final int NOTIFICATION_ID_MESSAGE = 1;
     private static final int NOTIFICATION_ID_IMAGE = 2;
-    private static final int NOTIFICATION_ID_CHAT = 3;
 
     @BindView(R.id.edit_message) EditText messageEdit;
 
@@ -70,6 +64,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @OnClick(R.id.button_clear)
+    public void clearAll() {
+        manager.cancelAll();
+    }
+
     @OnClick(R.id.button_send)
     public void showMessageNotification() {
         messageCount++;
@@ -87,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 .setLights(LIGHT_COLOR_ARGB, 100, 100)
                 .setColor(getResources().getColor(R.color.colorAccent))
                 .setAutoCancel(true);
+
 
         NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle();
         style.bigText(messageToShow);
@@ -125,13 +125,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void addMessageIntent(NotificationCompat.Builder builder, String message) {
 
-        Intent contentIntent = new Intent(this, MessageActivity.class);
+        Intent contentIntent = new Intent(this, MainActivity.class);
         contentIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         contentIntent.putExtra(MessageActivity.EXTRA_TEXT, message);
 
-        int requestId = (int) System.currentTimeMillis();
-        int flags = PendingIntent.FLAG_CANCEL_CURRENT;
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, requestId, contentIntent, flags);
+        int flags = PendingIntent.FLAG_UPDATE_CURRENT;
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, contentIntent, flags);
 
         builder.addAction(new NotificationCompat.Action(0, getString(R.string.show), pendingIntent));
     }
@@ -140,12 +139,10 @@ public class MainActivity extends AppCompatActivity {
     private void addDefaultIntent(NotificationCompat.Builder builder) {
 
         Intent contentIntent = new Intent(this, MainActivity.class);
-        contentIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        contentIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        int requestId = (int) System.currentTimeMillis(); // уникальный requestId для различения
         int flags = PendingIntent.FLAG_CANCEL_CURRENT; // отменить старый и создать новый
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, requestId, contentIntent, flags);
-
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, contentIntent, flags);
 
         builder.setContentIntent(pendingIntent);
 

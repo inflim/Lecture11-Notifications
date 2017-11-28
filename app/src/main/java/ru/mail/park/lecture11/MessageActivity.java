@@ -1,6 +1,5 @@
 package ru.mail.park.lecture11;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -22,12 +21,7 @@ public class MessageActivity extends AppCompatActivity{
 
         ButterKnife.bind(this);
 
-        Intent intent = getIntent();
-        if (intent != null) {
-            String message = intent.getStringExtra(EXTRA_TEXT);
-            messageText.setText(message);
-
-        } else
-            finish();
+        String message = getIntent().getStringExtra(EXTRA_TEXT);
+        messageText.setText(message);
     }
 }
