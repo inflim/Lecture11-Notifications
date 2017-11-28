@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.widget.EditText;
 
 import butterknife.BindView;
@@ -19,6 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String ACTION_REMOVE_PROGRESS = "remove_progress";
     private NotificationManager manager;
 
     private static final long[] VIBRATION_PATTERN = {0, 100, 50, 100};
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int NOTIFICATION_ID_SIMPLE = 0;
     private static final int NOTIFICATION_ID_MESSAGE = 1;
     private static final int NOTIFICATION_ID_IMAGE = 2;
+    private static final int NOTIFICATION_ID_ONGOING = 3;
 
     @BindView(R.id.edit_message) EditText messageEdit;
 
@@ -46,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
         manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);;
 
         initChannels();
+
+        String action = getIntent().getAction();
+        if (! TextUtils.isEmpty(action))
+            manager.cancel(NOTIFICATION_ID_ONGOING);
     }
 
 
@@ -122,10 +129,28 @@ public class MainActivity extends AppCompatActivity {
         manager.notify(NOTIFICATION_ID_IMAGE, builder.build());
     }
 
+    @OnClick(R.id.button_ongoing)
+    public void showOngoingNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_DEFAULT);
+
+        builder.setSmallIcon(R.drawable.ic_announcement)
+                .setContentTitle(getString(R.string.ongoing))
+                .setContentText(getString(R.string.infinite_progress))
+                .setColor(getResources().getColor(R.color.colorAccent))
+                .setOngoing(true)
+                .setProgress(100, 1, true);
+
+        addDefaultIntent(builder);
+
+        addRemoveProgressIntent(builder);
+
+        manager.notify(NOTIFICATION_ID_ONGOING, builder.build());
+    }
+
 
     private void addMessageIntent(NotificationCompat.Builder builder, String message) {
 
-        Intent contentIntent = new Intent(this, MainActivity.class);
+        Intent contentIntent = new Intent(this, MessageActivity.class);
         contentIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         contentIntent.putExtra(MessageActivity.EXTRA_TEXT, message);
 
@@ -133,6 +158,18 @@ public class MainActivity extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, contentIntent, flags);
 
         builder.addAction(new NotificationCompat.Action(0, getString(R.string.show), pendingIntent));
+    }
+
+    private void addRemoveProgressIntent(NotificationCompat.Builder builder) {
+
+        Intent contentIntent = new Intent(this, MainActivity.class);
+        contentIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        contentIntent.setAction(ACTION_REMOVE_PROGRESS);
+
+        int flags = PendingIntent.FLAG_CANCEL_CURRENT;
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 2, contentIntent, flags);
+
+        builder.addAction(new NotificationCompat.Action(0, getString(R.string.remove), pendingIntent));
     }
 
 

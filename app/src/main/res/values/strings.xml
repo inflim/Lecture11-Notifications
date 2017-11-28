@@ -14,4 +14,7 @@
     <string name="message_summary">Сообщение #%d</string>
     <string name="show">Показать</string>
     <string name="clear">Удалить все</string>
+    <string name="ongoing">Ongoing/Progress</string>
+    <string name="infinite_progress">Бесконечный прогресс</string>
+    <string name="remove">Удалить</string>
 </resources>

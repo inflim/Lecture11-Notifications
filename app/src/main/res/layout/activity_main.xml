@@ -43,11 +43,20 @@
         android:layout_height="wrap_content"
         android:text="@string/big_image"/>
 
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:id="@+id/button_ongoing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ongoing"/>
+
     <Button
         android:layout_marginTop="20dp"
         android:id="@+id/button_clear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/clear"/>
+
 
 </LinearLayout>
