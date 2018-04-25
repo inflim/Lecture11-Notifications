@@ -13,7 +13,10 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.EditText;
+
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
         String action = getIntent().getAction();
         if (! TextUtils.isEmpty(action))
             manager.cancel(NOTIFICATION_ID_ONGOING);
+
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d(MessagingService.TAG, "FCM Token: " + refreshedToken);
     }
 
 
