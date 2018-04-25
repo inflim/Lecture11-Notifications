@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);;
+        manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         initChannels();
 
@@ -178,8 +178,10 @@ public class MainActivity extends AppCompatActivity {
         Intent contentIntent = new Intent(this, MainActivity.class);
         contentIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        int flags = PendingIntent.FLAG_CANCEL_CURRENT; // отменить старый и создать новый
+        int flags = PendingIntent.FLAG_UPDATE_CURRENT; // отменить старый и создать новый
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, contentIntent, flags);
+
+
 
         builder.setContentIntent(pendingIntent);
 
