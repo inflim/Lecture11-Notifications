@@ -10,9 +10,26 @@ if len(sys.argv) != 4:
 
 push_service = FCMNotification(API_KEY)
 
+data_message = {
+    "Nick" : "Mario",
+    "body" : "great match!",
+    "Room" : "PortugalVSDenmark"
+}
 registration_id = sys.argv[1]
 message_title = sys.argv[2]
 message_body = sys.argv[3]
-result = push_service.notify_single_device(registration_id=registration_id, message_title=message_title, message_body=message_body)
 
+# send notification message
+result = push_service.notify_single_device(registration_id=registration_id, message_title=message_title, message_body=message_body)
+print("send notification message result: ")
 print(result)
+
+# send notification & data message
+# result = push_service.notify_single_device(registration_id=registration_id, message_title=message_title, message_body=message_body, data_message=data_message)
+# print("send notification & data message result: ")
+# print(result)
+
+# send data only message
+# result = push_service.single_device_data_message(registration_id=registration_id, data_message=data_message)
+# print("send data message result: ")
+# print(result)
