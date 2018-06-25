@@ -20,4 +20,9 @@
     <string name="ongoing">Ongoing/Progress</string>
     <string name="infinite_progress">Бесконечный прогресс</string>
     <string name="remove">Удалить</string>
+    <string name="add">Добавить</string>
+    <string name="delete">Удалить</string>
+    <string name="messages">Сообщения</string>
+    <string name="inbox_name">Inbox</string>
+    <string name="crash">Crash!</string>
 </resources>

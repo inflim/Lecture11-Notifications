@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.EditText;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import butterknife.BindView;
@@ -64,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.button_simple)
     public void showSimpleNotification() {
+        Statistics.logButtonClick("Simple Notification");
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_LIKES);
 
         builder.setSmallIcon(R.drawable.ic_like)
@@ -80,11 +83,15 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.button_clear)
     public void clearAll() {
+        Statistics.logButtonClick("Clear All");
+
         manager.cancelAll();
     }
 
     @OnClick(R.id.button_send)
     public void showMessageNotification() {
+        Statistics.logButtonClick("Show message");
+
         messageCount++;
 
         String messageToShow = messageEdit.getText().toString();
@@ -95,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 .setSmallIcon(R.drawable.ic_message_black)
                 .setContentTitle(getString(R.string.message_name))
                 .setContentText(messageToShow)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setVibrate(VIBRATION_PATTERN)
                 .setLights(LIGHT_COLOR_ARGB, 100, 100)
                 .setColor(getResources().getColor(R.color.colorAccent))
@@ -115,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.button_image)
     public void showBigImageNotification() {
+        Statistics.logButtonClick("Show Big Image");
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_DEFAULT);
 
         builder.setSmallIcon(R.drawable.ic_announcement)
@@ -136,8 +145,15 @@ public class MainActivity extends AppCompatActivity {
         manager.notify(NOTIFICATION_ID_IMAGE, builder.build());
     }
 
+    @OnClick(R.id.button_crash)
+    public void crash() {
+        Crashlytics.getInstance().crash();
+    }
+
     @OnClick(R.id.button_ongoing)
     public void showOngoingNotification() {
+        Statistics.logButtonClick("Show Ongoing");
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_DEFAULT);
 
         builder.setSmallIcon(R.drawable.ic_announcement)
@@ -187,11 +203,9 @@ public class MainActivity extends AppCompatActivity {
         int flags = PendingIntent.FLAG_UPDATE_CURRENT; // отменить старый и создать новый
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, contentIntent, flags);
 
-
-
         builder.setContentIntent(pendingIntent);
-
     }
+
 
     public void initChannels() {
         if (Build.VERSION.SDK_INT < 26)
